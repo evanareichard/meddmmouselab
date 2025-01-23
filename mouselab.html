@@ -121,17 +121,46 @@
       </span>
     </div>
   </div>
-  <button onclick="redirectToQualtrics()">Continue to Survey</button>
   <script>
-    // Extract the ResponseID from the URL
+    // Extract ResponseID from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const responseID = urlParams.get('ResponseID');
     console.log("Participant ResponseID:", responseID); // Debugging
 
-    // Redirect function with appended ResponseID
-    function redirectToQualtrics() {
-      window.location.href = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}`;
-    }
+    // Initialize timing variables
+    const interactionData = [];
+    const totalStartTime = Date.now(); // Start time for the whole task
+
+    // Track time spent on each cell
+    document.querySelectorAll('.cell').forEach((cell, index) => {
+      let cellStartTime;
+
+      // Start timing when the mouse enters a cell
+      cell.addEventListener('mouseenter', () => {
+        cellStartTime = Date.now();
+      });
+
+      // Stop timing and record when the mouse leaves a cell
+      cell.addEventListener('mouseleave', () => {
+        const cellTimeSpent = Date.now() - cellStartTime;
+        interactionData.push({
+          cell: index + 1, // Cell number
+          timeSpent: cellTimeSpent, // Time spent in milliseconds
+          timestamp: new Date().toISOString(), // Time of interaction
+        });
+        console.log(`Cell ${index + 1} hovered for ${cellTimeSpent} ms`);
+      });
+    });
+
+    // Capture total time spent and log data before leaving the page
+    window.addEventListener('beforeunload', () => {
+      const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
+      console.log("Total time spent on task:", totalTimeSpent, "ms");
+      console.log("Cell interaction data:", interactionData);
+
+      // Log data for debugging or future integration with Qualtrics
+      console.log("ResponseID:", responseID);
+    });
   </script>
 </body>
 </html>
