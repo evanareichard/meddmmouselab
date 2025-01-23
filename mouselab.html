@@ -10,14 +10,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      height: 100%;
       margin: 0;
     }
     .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 300px); /* Adjust column width for content */
-      gap: 15px;
-    }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 15px;
+  width: 90%; /* Ensure the grid adapts to the iframe width */
+}
     .cell {
       width: 300px;
       height: 150px;
