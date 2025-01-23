@@ -153,21 +153,26 @@ document.querySelectorAll('.cell').forEach((cell, index) => {
   });
 });
 
-// Append timing data to the Qualtrics URL on page unload
-window.addEventListener('beforeunload', () => {
+// Send data to Qualtrics when the participant clicks "Next" in the iframe
+function sendDataToQualtrics() {
   const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
   console.log("Total time spent on task:", totalTimeSpent, "ms");
   console.log("Cell interaction data:", interactionData);
 
-  // Encode data for Qualtrics URL
-  const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
-  const redirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
+  // Send data to the parent Qualtrics window
+  window.parent.postMessage(
+    {
+      type: "MOUSELAB_DATA",
+      totalTime: totalTimeSpent,
+      interactions: interactionData,
+      responseID: responseID,
+    },
+    "*"
+  );
+}
 
-  console.log("Redirect URL:", redirectURL); // Log for debugging
-
-  // Use window.location.href to ensure data is appended and sent
-  window.location.href = redirectURL;
-});
+// Trigger sendDataToQualtrics when the participant finishes
+window.addEventListener("beforeunload", sendDataToQualtrics);
   </script>
 </body>
 </html>
