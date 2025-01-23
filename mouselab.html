@@ -108,18 +108,18 @@
 
     // Redirect to Qualtrics with data in the URL
     function sendDataToQualtrics() {
-      const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
-      console.log("Total time spent on task:", totalTimeSpent);
-      console.log("Cell interaction data:", interactionData);
+  const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
+  console.log("Total time spent on task:", totalTimeSpent);
+  console.log("Cell interaction data:", interactionData);
 
-      // Encode data into URL parameters
-      const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
-      const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
+  // Encode data into URL parameters
+  const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
+  const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
 
-      // Redirect to Qualtrics
-      console.log("Redirecting to:", qualtricsRedirectURL);
-      window.location.href = qualtricsRedirectURL;
-    }
+  // Redirect the top-level window to Qualtrics
+  console.log("Redirecting to:", qualtricsRedirectURL);
+  window.top.location.href = qualtricsRedirectURL;
+}
 
     // Add event listener to "Finish Task" button
     document.getElementById("finishTaskButton").addEventListener("click", () => {
