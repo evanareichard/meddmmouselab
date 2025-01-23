@@ -153,25 +153,35 @@ document.querySelectorAll('.cell').forEach((cell, index) => {
   });
 });
 
-// Send data to Qualtrics when the participant clicks "Next" in the iframe
+// Send data to Qualtrics via hidden fields
 function sendDataToQualtrics() {
   const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
   console.log("Total time spent on task:", totalTimeSpent, "ms");
   console.log("Cell interaction data:", interactionData);
 
-  // Send data to the parent Qualtrics window
-  window.parent.postMessage(
-    {
-      type: "MOUSELAB_DATA",
-      totalTime: totalTimeSpent,
-      interactions: interactionData,
-      responseID: responseID,
-    },
-    "*"
-  );
+  // Create hidden input fields for Qualtrics
+  const totalTimeField = document.createElement('input');
+  totalTimeField.type = 'hidden';
+  totalTimeField.name = 'totalTime';
+  totalTimeField.value = totalTimeSpent;
+
+  const interactionsField = document.createElement('input');
+  interactionsField.type = 'hidden';
+  interactionsField.name = 'interactions';
+  interactionsField.value = JSON.stringify(interactionData);
+
+  // Append hidden fields to the parent Qualtrics form
+  const parentForm = window.parent.document.querySelector('form');
+  if (parentForm) {
+    parentForm.appendChild(totalTimeField);
+    parentForm.appendChild(interactionsField);
+    console.log("Data sent to Qualtrics form.");
+  } else {
+    console.error("Qualtrics form not found.");
+  }
 }
 
-// Trigger sendDataToQualtrics when the participant finishes
+// Trigger sendDataToQualtrics when the participant clicks "Next"
 window.addEventListener("beforeunload", sendDataToQualtrics);
   </script>
 </body>
