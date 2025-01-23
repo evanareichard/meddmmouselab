@@ -106,32 +106,28 @@
       });
     });
 
-    // Function to send data to Qualtrics
+    // Redirect to Qualtrics with data in the URL
     function sendDataToQualtrics() {
-      const totalTimeSpent = Date.now() - totalStartTime;
-      console.log("Triggering sendDataToQualtrics...");
+      const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
       console.log("Total time spent on task:", totalTimeSpent);
       console.log("Cell interaction data:", interactionData);
 
-      if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
-        console.log("Qualtrics API is available.");
-        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("totalTime", totalTimeSpent);
-        window.parent.Qualtrics.SurveyEngine.setEmbeddedData("interactions", JSON.stringify(interactionData));
-        console.log("Data sent to Qualtrics:");
-        console.log("Total Time:", totalTimeSpent);
-        console.log("Interactions:", interactionData);
-      } else {
-        console.error("Qualtrics API is not available or accessible.");
-      }
+      // Encode data into URL parameters
+      const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
+      const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
+
+      // Redirect to Qualtrics
+      console.log("Redirecting to:", qualtricsRedirectURL);
+      window.location.href = qualtricsRedirectURL;
     }
 
-    // Trigger sendDataToQualtrics when the "Finish Task" button is clicked
+    // Add event listener to "Finish Task" button
     document.getElementById("finishTaskButton").addEventListener("click", () => {
       sendDataToQualtrics();
-      alert("Task data saved. You may proceed with the survey.");
     });
   </script>
 </body>
 </html>
+
 
 
