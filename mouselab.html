@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mouselab Experiment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin: 0;
+    }
+    .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+  gap: 15px;
+  width: 90%; /* Ensure the grid adapts to the iframe width */
+}
+    .cell {
+      width: 300px;
+      height: 150px;
+      background-color: #ddd;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+      position: relative;
+      overflow: hidden;
+    }
+    .heading {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .content {
+      display: none; /* Hidden by default */
+      font-size: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+    .cell:hover .content {
+      display: block; /* Show on hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell">
+      <span class="heading">Prevalence and Types:</span>
+      <span class="content">
+        Skin cancer is the most common cancer globally, with millions of cases diagnosed annually. The two most common types are basal cell carcinoma and squamous cell carcinoma, while melanoma, though less common, is more likely to be fatal.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Sun Protection:</span>
+      <span class="content">
+        Use broad-spectrum sunscreen with an SPF of 30 or higher and reapply every two hours when outdoors. Wearing wide-brimmed hats, sunglasses, and protective clothing can further reduce sun exposure.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Early Detection:</span>
+      <span class="content">
+        If a mole or spot changes in size, shape, or color, or if a new growth appears, schedule an appointment with a dermatologist promptly. Use the ABCDE rule to identify suspicious lesions.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Risk Factors:</span>
+      <span class="content">
+        Factors like excessive sun exposure, fair skin, a history of sunburns, and a family history of skin cancer increase the risk. Individuals with darker skin tones often experience worse outcomes due to later diagnoses.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Avoiding Peak Sun:</span>
+      <span class="content">
+        Limit outdoor activities during peak UV hours (10 AM–4 PM), when the sun’s rays are strongest.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Medical Interventions:</span>
+      <span class="content">
+        Treatments may include surgical excision, cryotherapy, radiation therapy, or topical medications for non-invasive cases.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Incidence:</span>
+      <span class="content">
+        Men are generally more likely to develop non-melanoma skin cancers than women. Melanoma is less common in Black individuals but tends to be more aggressive when diagnosed.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Regular Skin Checks:</span>
+      <span class="content">
+        Conduct monthly self-examinations to look for changes in moles, freckles, or spots. Pay special attention to sun-exposed areas.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Follow-Up Care:</span>
+      <span class="content">
+        After treatment, regular follow-ups with a healthcare provider are essential to monitor for recurrence and manage skin health.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Geographic and Environmental Factors:</span>
+      <span class="content">
+        Living closer to the equator or at higher altitudes increases exposure to ultraviolet (UV) radiation, raising the risk of skin cancer. In urban areas, ozone layer depletion can amplify UV exposure.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Lifestyle Choices:</span>
+      <span class="content">
+        Avoid tanning beds and adopt a balanced diet rich in antioxidants, which may support overall skin health.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Support Resources:</span>
+      <span class="content">
+        Many patients benefit from educational resources and support groups that address emotional and practical challenges of living with or recovering from skin cancer.
+      </span>
+    </div>
+  </div>
+  <script>
+// Extract ResponseID from the URL
+const urlParams = new URLSearchParams(window.location.search);
+const responseID = urlParams.get('ResponseID');
+console.log("Participant ResponseID:", responseID); // Debugging
+
+// Initialize timing variables
+const interactionData = [];
+const totalStartTime = Date.now(); // Start time for the whole task
+
+// Track time spent on each cell
+document.querySelectorAll('.cell').forEach((cell, index) => {
+  let cellStartTime;
+
+  // Start timing when the mouse enters a cell
+  cell.addEventListener('mouseenter', () => {
+    cellStartTime = Date.now();
+  });
+
+  // Stop timing and record when the mouse leaves a cell
+  cell.addEventListener('mouseleave', () => {
+    const cellTimeSpent = Date.now() - cellStartTime;
+    interactionData.push({
+      cell: index + 1, // Cell number
+      timeSpent: cellTimeSpent, // Time spent in milliseconds
+      timestamp: new Date().toISOString(), // Time of interaction
+    });
+    console.log(`Cell ${index + 1} hovered for ${cellTimeSpent} ms`);
+  });
+});
+
+// Send data to Qualtrics when the participant clicks "Next"
+function sendDataToQualtrics() {
+  const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
+  console.log("Triggering sendDataToQualtrics...");
+  console.log("Total time spent on task:", totalTimeSpent, "ms");
+  console.log("Cell interaction data:", interactionData);
+
+  // Communicate with Qualtrics using the JavaScript API
+  if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
+    console.log("Qualtrics API is available.");
+    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("totalTime", totalTimeSpent);
+    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("interactions", JSON.stringify(interactionData));
+    console.log("Data sent to Qualtrics:");
+    console.log("Total Time:", totalTimeSpent);
+    console.log("Interactions:", interactionData);
+  } else {
+    console.error("Qualtrics API is not available or accessible.");
+  }
+}
+
+// Trigger sendDataToQualtrics when the participant finishes
+window.addEventListener("beforeunload", sendDataToQualtrics);  </script>
+</body>
+</html>
+
+
