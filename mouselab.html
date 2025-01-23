@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mouselab Experiment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 300px); /* Adjust column width for content */
+      gap: 15px;
+    }
+    .cell {
+      width: 300px;
+      height: 150px;
+      background-color: #ddd;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+      position: relative;
+      overflow: hidden;
+    }
+    .heading {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .content {
+      display: none; /* Hidden by default */
+      font-size: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+    .cell:hover .content {
+      display: block; /* Show on hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="cell">
+      <span class="heading">Prevalence and Types:</span>
+      <span class="content">
+        Skin cancer is the most common cancer globally, with millions of cases diagnosed annually. The two most common types are basal cell carcinoma and squamous cell carcinoma, while melanoma, though less common, is more likely to be fatal.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Sun Protection:</span>
+      <span class="content">
+        Use broad-spectrum sunscreen with an SPF of 30 or higher and reapply every two hours when outdoors. Wearing wide-brimmed hats, sunglasses, and protective clothing can further reduce sun exposure.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Early Detection:</span>
+      <span class="content">
+        If a mole or spot changes in size, shape, or color, or if a new growth appears, schedule an appointment with a dermatologist promptly. Use the ABCDE rule to identify suspicious lesions.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Risk Factors:</span>
+      <span class="content">
+        Factors like excessive sun exposure, fair skin, a history of sunburns, and a family history of skin cancer increase the risk. Individuals with darker skin tones often experience worse outcomes due to later diagnoses.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Avoiding Peak Sun:</span>
+      <span class="content">
+        Limit outdoor activities during peak UV hours (10 AM–4 PM), when the sun’s rays are strongest.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Medical Interventions:</span>
+      <span class="content">
+        Treatments may include surgical excision, cryotherapy, radiation therapy, or topical medications for non-invasive cases.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Incidence:</span>
+      <span class="content">
+        Men are generally more likely to develop non-melanoma skin cancers than women. Melanoma is less common in Black individuals but tends to be more aggressive when diagnosed.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Regular Skin Checks:</span>
+      <span class="content">
+        Conduct monthly self-examinations to look for changes in moles, freckles, or spots. Pay special attention to sun-exposed areas.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Follow-Up Care:</span>
+      <span class="content">
+        After treatment, regular follow-ups with a healthcare provider are essential to monitor for recurrence and manage skin health.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Geographic and Environmental Factors:</span>
+      <span class="content">
+        Living closer to the equator or at higher altitudes increases exposure to ultraviolet (UV) radiation, raising the risk of skin cancer. In urban areas, ozone layer depletion can amplify UV exposure.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Lifestyle Choices:</span>
+      <span class="content">
+        Avoid tanning beds and adopt a balanced diet rich in antioxidants, which may support overall skin health.
+      </span>
+    </div>
+    <div class="cell">
+      <span class="heading">Support Resources:</span>
+      <span class="content">
+        Many patients benefit from educational resources and support groups that address emotional and practical challenges of living with or recovering from skin cancer.
+      </span>
+    </div>
+  </div>
+</body>
+</html>
+
+
