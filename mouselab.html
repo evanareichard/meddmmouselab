@@ -114,7 +114,8 @@
 
   // Encode data into URL parameters
   const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
-  const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
+  const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?Q_R=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
+`;
 
   // Redirect the top-level window to Qualtrics
   console.log("Redirecting to:", qualtricsRedirectURL);
