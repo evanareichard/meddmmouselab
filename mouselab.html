@@ -162,7 +162,11 @@ window.addEventListener('beforeunload', () => {
   // Encode data for Qualtrics URL
   const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
   const redirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?ResponseID=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
-  navigator.sendBeacon(redirectURL); // Send the data to Qualtrics
+
+  console.log("Redirect URL:", redirectURL); // Log for debugging
+
+  // Use window.location.href to ensure data is appended and sent
+  window.location.href = redirectURL;
 });
   </script>
 </body>
