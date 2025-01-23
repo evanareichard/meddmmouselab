@@ -153,35 +153,25 @@ document.querySelectorAll('.cell').forEach((cell, index) => {
   });
 });
 
-// Send data to Qualtrics via hidden fields
+// Send data to Qualtrics when the participant clicks "Next"
 function sendDataToQualtrics() {
   const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
   console.log("Total time spent on task:", totalTimeSpent, "ms");
   console.log("Cell interaction data:", interactionData);
 
-  // Create hidden input fields for Qualtrics
-  const totalTimeField = document.createElement('input');
-  totalTimeField.type = 'hidden';
-  totalTimeField.name = 'totalTime';
-  totalTimeField.value = totalTimeSpent;
-
-  const interactionsField = document.createElement('input');
-  interactionsField.type = 'hidden';
-  interactionsField.name = 'interactions';
-  interactionsField.value = JSON.stringify(interactionData);
-
-  // Append hidden fields to the parent Qualtrics form
-  const parentForm = window.parent.document.querySelector('form');
-  if (parentForm) {
-    parentForm.appendChild(totalTimeField);
-    parentForm.appendChild(interactionsField);
-    console.log("Data sent to Qualtrics form.");
+  // Communicate with Qualtrics using the JavaScript API
+  if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
+    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("totalTime", totalTimeSpent);
+    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("interactions", JSON.stringify(interactionData));
+    console.log("Data sent to Qualtrics:");
+    console.log("Total Time:", totalTimeSpent);
+    console.log("Interactions:", interactionData);
   } else {
-    console.error("Qualtrics form not found.");
+    console.error("Qualtrics API is not available.");
   }
 }
 
-// Trigger sendDataToQualtrics when the participant clicks "Next"
+// Trigger sendDataToQualtrics when the participant finishes
 window.addEventListener("beforeunload", sendDataToQualtrics);
   </script>
 </body>
