@@ -151,16 +151,13 @@
     interactions: interactionData,
   });
 
-  // Send data to Qualtrics using the Qualtrics API
-  if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
-    console.log("Qualtrics API available. Sending data...");
-    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("totalTime", totalTimeSpent);
-    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("interactions", JSON.stringify(interactionData));
-    alert("Task data saved. Please proceed by clicking the 'Next' button below the task.");
-  } else {
-    console.error("Qualtrics API not available. Data could not be sent.");
-    alert("Error: Task data could not be saved. Please notify the researcher.");
-  }
+  // Construct the Qualtrics redirect URL
+  const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
+  const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?Q_R=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
+
+  // Redirect to Qualtrics
+  console.log("Redirecting to:", qualtricsRedirectURL);
+  window.top.location.href = qualtricsRedirectURL; // Redirect the entire page
 });
   </script>
 </body>
