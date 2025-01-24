@@ -15,7 +15,7 @@
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 15px;
       width: 90%;
     }
@@ -64,17 +64,52 @@
   <div class="grid">
     <div class="cell">
       <span class="heading">Prevalence and Types:</span>
-      <span class="content">
-        Skin cancer is the most common cancer globally, with millions of cases diagnosed annually. The two most common types are basal cell carcinoma and squamous cell carcinoma, while melanoma, though less common, is more likely to be fatal.
-      </span>
+      <span class="content">Skin cancer is the most common cancer globally, with millions of cases diagnosed annually. The two most common types are basal cell carcinoma and squamous cell carcinoma, while melanoma, though less common, is more likely to be fatal.</span>
     </div>
     <div class="cell">
       <span class="heading">Sun Protection:</span>
-      <span class="content">
-        Use broad-spectrum sunscreen with an SPF of 30 or higher and reapply every two hours when outdoors. Wearing wide-brimmed hats, sunglasses, and protective clothing can further reduce sun exposure.
-      </span>
+      <span class="content">Use broad-spectrum sunscreen with an SPF of 30 or higher and reapply every two hours when outdoors. Wearing wide-brimmed hats, sunglasses, and protective clothing can further reduce sun exposure.</span>
     </div>
-    <!-- Add all remaining cells here -->
+    <div class="cell">
+      <span class="heading">Early Detection:</span>
+      <span class="content">If a mole or spot changes in size, shape, or color, or if a new growth appears, schedule an appointment with a dermatologist promptly. Use the ABCDE rule (Asymmetry, Border irregularity, Color variation, Diameter over 6mm, Evolving size/shape) to identify suspicious lesions.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Risk Factors:</span>
+      <span class="content">Factors like excessive sun exposure, fair skin, a history of sunburns, and a family history of skin cancer increase the risk. While anyone can develop skin cancer, individuals with lighter skin tones have a higher risk, but those with darker skin tones often experience worse outcomes due to later diagnoses.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Avoiding Peak Sun:</span>
+      <span class="content">Limit outdoor activities during peak UV hours (10 AM–4 PM), when the sun’s rays are strongest.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Medical Interventions:</span>
+      <span class="content">Depending on the type and stage of skin cancer, treatments may include surgical excision, cryotherapy, radiation therapy, or topical medications for non-invasive cases.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Incidence:</span>
+      <span class="content">Men are generally more likely to develop non-melanoma skin cancers than women, often due to higher rates of outdoor work. Melanoma is less common in Black individuals but tends to be more aggressive when diagnosed.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Regular Skin Checks:</span>
+      <span class="content">Conduct monthly self-examinations to look for changes in moles, freckles, or spots. Pay special attention to areas exposed to the sun, such as the face, neck, and hands.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Follow-Up Care:</span>
+      <span class="content">After treatment, regular follow-ups with a healthcare provider are essential to monitor for recurrence and manage skin health. Maintaining vigilant sun protection is crucial to prevent further damage.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Geographic and Environmental Factors:</span>
+      <span class="content">Living closer to the equator or at higher altitudes increases exposure to ultraviolet (UV) radiation, raising the risk of skin cancer. In urban areas, ozone layer depletion can amplify UV exposure, further emphasizing the importance of preventive measures.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Lifestyle Choices:</span>
+      <span class="content">Avoid tanning beds and adopt a balanced diet rich in antioxidants, which may support overall skin health.</span>
+    </div>
+    <div class="cell">
+      <span class="heading">Support Resources:</span>
+      <span class="content">Many patients benefit from educational resources and support groups that address emotional and practical challenges of living with or recovering from skin cancer. These networks can improve adherence to treatment plans and overall well-being.</span>
+    </div>
   </div>
   <button id="finishTaskButton">Finish Task</button>
   <script>
@@ -106,29 +141,27 @@
       });
     });
 
-    // Redirect to Qualtrics with data in the URL
-    function sendDataToQualtrics() {
-  const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
-  console.log("Total time spent on task:", totalTimeSpent);
-  console.log("Cell interaction data:", interactionData);
-
-  // Encode data into URL parameters
-  const encodedInteractions = encodeURIComponent(JSON.stringify(interactionData));
-  const qualtricsRedirectURL = `https://missouri.qualtrics.com/jfe/form/SV_8GPmMqbQN3Iqfe6?Q_R=${responseID}&totalTime=${totalTimeSpent}&interactions=${encodedInteractions}`;
-`;
-
-  // Redirect the top-level window to Qualtrics
-  console.log("Redirecting to:", qualtricsRedirectURL);
-  window.top.location.href = qualtricsRedirectURL;
-}
-
-    // Add event listener to "Finish Task" button
+    // Log data on "Finish Task" button click
     document.getElementById("finishTaskButton").addEventListener("click", () => {
-      sendDataToQualtrics();
-    });
+  const totalTimeSpent = Date.now() - totalStartTime; // Total time spent on the task
+
+  // Log data locally for debugging
+  console.log("Task Finished:", {
+    totalTime: totalTimeSpent,
+    interactions: interactionData,
+  });
+
+  // Send data to Qualtrics using the Qualtrics API
+  if (window.parent && window.parent.Qualtrics && window.parent.Qualtrics.SurveyEngine) {
+    console.log("Qualtrics API available. Sending data...");
+    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("totalTime", totalTimeSpent);
+    window.parent.Qualtrics.SurveyEngine.setEmbeddedData("interactions", JSON.stringify(interactionData));
+    alert("Task data saved. Please proceed by clicking the 'Next' button below the task.");
+  } else {
+    console.error("Qualtrics API not available. Data could not be sent.");
+    alert("Error: Task data could not be saved. Please notify the researcher.");
+  }
+});
   </script>
 </body>
 </html>
-
-
-
